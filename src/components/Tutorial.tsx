@@ -113,5 +113,3 @@ export default Tutorial;
 };
 
 export default Tutorial;
-
-export default Tutorial;
