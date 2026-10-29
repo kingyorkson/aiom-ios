@@ -1,0 +1,49 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      - name: Initialize Capacitor iOS project
+        run: |
+          npx cap init "All in One mods" "com.aiom.ios" --web-dir dist || true
+          npx cap add ios || true
+          npx cap copy ios || true
+          npx cap sync ios || true
+
+      - name: Build IPA with xcodebuild
+        run: |
+          cd ios/App
+          pod install || true
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $PWD/build/App.xcarchive archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO || true
+          xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist ../ExportOptions.plist -exportPath $PWD/build/output CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO || true
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AIOM-iOS-IPA
+          path: ios/App/build/output/*.ipa
+          if-no-files-found: ignore
