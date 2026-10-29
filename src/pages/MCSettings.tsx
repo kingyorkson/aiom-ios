@@ -371,3 +371,5 @@ const MCSettings: React.FC = () => {
 };
 
 export default MCSettings;
+
+export default MCSettings;
