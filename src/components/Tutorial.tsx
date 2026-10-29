@@ -73,43 +73,5 @@ const Tutorial: React.FC<TutorialProps> = ({ onComplete, isIOS = false }) => {
       </div>
     </div>
   );
-};
-
-export default Tutorial;
-
-  const handleNext = () => {
-    if (step < steps.length - 1) {
-      setStep(step + 1);
-    } else {
-      onComplete();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center">
-      <div className={`max-w-xl w-full p-8 rounded-2xl shadow-2xl ${theme === 'fancy' ? "bg-[#1e1e2e] border border-white/10 text-white" : "bg-[#c6c6c6] border-4 border-white text-black"}`}>
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-4">{steps[step].title}</h2>
-          <p className="text-lg opacity-80 leading-relaxed">{steps[step].content}</p>
-        </div>
-        
-        <div className="flex justify-between items-center">
-          <div className="flex gap-2">
-            {steps.map((_, i) => (
-              <div key={i} className={`h-2 rounded-full transition-all ${i === step ? "w-8 bg-aiom-accent" : "w-2 bg-gray-500"}`} />
-            ))}
-          </div>
-          
-          <button 
-            onClick={handleNext}
-            className={`px-8 py-3 rounded-xl font-bold text-lg ${theme === 'fancy' ? "bg-aiom-accent text-aiom-bg hover:scale-105 transition-transform" : "bg-[#8b8b8b] text-white border-2 border-white"}`}
-          >
-            {step === steps.length - 1 ? (isIOS ? "Done" : "Get Started") : "Next"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default Tutorial;
