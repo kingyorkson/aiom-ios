@@ -1,0 +1,77 @@
+{
+  "name": "aiom-ios",
+  "private": true,
+  "version": "0.0.3",
+  "description": "All in One Mods Manager - iOS",
+  "author": "AIOM Team",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:react\" \"npm run dev:electron\"",
+    "start": "npm run dev",
+    "dev:react": "vite",
+    "dev:electron": "tsc -p tsconfig.electron.json && wait-on tcp:5173 && electron .",
+    "build": "tsc -b && tsc -p tsconfig.electron.json && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "adm-zip": "^0.5.16",
+    "archiver": "^7.0.1",
+    "axios": "^1.13.2",
+    "jimp": "^0.22.10",
+    "discord-rpc": "^4.0.1",
+    "fs-extra": "^11.3.3",
+    "lucide-react": "^0.563.0",
+    "minecraft-launcher-core": "^3.18.2",
+    "msmc": "^5.0.5",
+    "nbt": "^0.8.1",
+    "prismarine-nbt": "^2.8.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/archiver": "^7.0.0",
+    "@types/discord-rpc": "^4.0.10",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.23",
+    "concurrently": "^9.2.1",
+    "electron": "^40.0.0",
+    "electron-builder": "^26.4.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "npm:rolldown-vite@7.2.5",
+    "wait-on": "^9.0.3"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "build": {
+    "appId": "com.aiom.ios",
+    "productName": "All in One mods",
+    "directories": {
+      "output": "release-build-ios"
+    },
+    "npmRebuild": false,
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "icon.png",
+      "Loadericon.png"
+    ]
+  }
+}

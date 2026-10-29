@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-aiom-bg: #1e1e2e;
+  --color-aiom-sidebar: #181825;
+  --color-aiom-accent: #cba6f7;
+  --color-aiom-text: #cdd6f4;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
