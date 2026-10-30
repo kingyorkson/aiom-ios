@@ -31,11 +31,18 @@ jobs:
       - name: Initialize Capacitor iOS project
         run: |
           rm -f capacitor.config.ts capacitor.config.json
+          if [ -f ios/ExportOptions.plist ]; then
+            cp ios/ExportOptions.plist /tmp/ExportOptions.plist.bak
+          fi
           rm -rf ios
           npx cap init "All in One mods" "com.aiom.ios" --web-dir dist
           npx cap add ios
           npx cap copy ios
           npx cap sync ios
+          mkdir -p ios
+          if [ -f /tmp/ExportOptions.plist.bak ]; then
+            cp /tmp/ExportOptions.plist.bak ios/ExportOptions.plist
+          fi
           if [ -f ios/App/Podfile ]; then
             sed -i '' "s/platform :ios, .*/platform :ios, '14.0'/g" ios/App/Podfile
           fi
@@ -47,7 +54,13 @@ jobs:
           pod install
           mkdir -p build/output
           xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $PWD/build/App.xcarchive archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-          xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist $PWD/../ExportOptions.plist -exportPath $PWD/build/output -allowProvisioningUpdates NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          if [ -f ../ExportOptions.plist ]; then
+            xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist $PWD/../ExportOptions.plist -exportPath $PWD/build/output -allowProvisioningUpdates NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          elif [ -f ExportOptions.plist ]; then
+            xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist $PWD/ExportOptions.plist -exportPath $PWD/build/output -allowProvisioningUpdates NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          else
+            echo "ExportOptions.plist not found" && exit 1
+          fi
           ls -la build/output/
 
       - name: Upload IPA artifact
