@@ -36,11 +36,16 @@ jobs:
           npx cap add ios
           npx cap copy ios
           npx cap sync ios
+          # Update deployment target
+          if [ -f ios/App/Podfile ]; then
+            sed -i '' "s/platform :ios, '13.0'/platform :ios, '14.0'/g" ios/App/Podfile || true
+            sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = 13.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g" ios/App/App.xcodeproj/project.pbxproj || true
+          fi
 
       - name: Build IPA with xcodebuild
         run: |
           cd ios/App
-          pod install
+          pod install --repo-update
           mkdir -p build/output
           xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $PWD/build/App.xcarchive archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
           xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist $PWD/../ExportOptions.plist -exportPath $PWD/build/output -allowProvisioningUpdates NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
