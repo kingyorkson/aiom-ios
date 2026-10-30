@@ -340,34 +340,7 @@ const MCSettings: React.FC = () => {
             </div>
           </div>
         </div>
-
-      {showSkins && (
-        <div className={`mt-6 p-4 rounded-xl ${theme === 'fancy' ? "bg-white/10 text-white" : "bg-white border border-[#8b8b8b]"}`}>
-          {skins.length === 0 ? (
-            <div className="opacity-70 text-sm">No skins yet. Upload a PNG to add one.</div>
-          ) : (
-            <div className="grid grid-cols-1 gap-2">
-              {skins.map(s => (
-                <div key={s.path} className="flex items-center justify-between p-3 rounded-lg bg-black/10">
-                  <div className="flex items-center gap-3">
-                    <div className="font-bold">{s.name}</div>
-                    <div className="text-xs opacity-70">{(s.size / 1024).toFixed(1)} KB</div>
-                  </div>
-                  <button 
-                    onClick={() => handleAssignSkinFromLibrary(s.path)}
-                    className={`px-3 py-1 rounded ${theme === 'fancy' ? "bg-aiom-accent text-aiom-bg" : "bg-[#8b8b8b] text-white border border-white"}`}
-                  >
-                    Change To (Selected Account)
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
       </div>
     </div>
   );
 };
-
-export default MCSettings;
