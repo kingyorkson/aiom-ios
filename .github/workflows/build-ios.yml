@@ -29,21 +29,23 @@ jobs:
 
       - name: Initialize Capacitor iOS project
         run: |
-          npx cap init "All in One mods" "com.aiom.ios" --web-dir dist || true
-          npx cap add ios || true
-          npx cap copy ios || true
-          npx cap sync ios || true
+          npx cap init "All in One mods" "com.aiom.ios" --web-dir dist
+          npx cap add ios
+          npx cap copy ios
+          npx cap sync ios
 
       - name: Build IPA with xcodebuild
         run: |
           cd ios/App
-          pod install || true
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $PWD/build/App.xcarchive archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO || true
-          xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist ../ExportOptions.plist -exportPath $PWD/build/output CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO || true
+          pod install
+          mkdir -p build/output
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $PWD/build/App.xcarchive archive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          xcodebuild -exportArchive -archivePath $PWD/build/App.xcarchive -exportOptionsPlist $PWD/../ExportOptions.plist -exportPath $PWD/build/output -allowProvisioningUpdates NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          ls -la build/output/
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: AIOM-iOS-IPA
           path: ios/App/build/output/*.ipa
-          if-no-files-found: ignore
+          if-no-files-found: error
