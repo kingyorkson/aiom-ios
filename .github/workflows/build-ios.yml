@@ -29,6 +29,7 @@ jobs:
 
       - name: Initialize Capacitor iOS project
         run: |
+          rm -f capacitor.config.ts capacitor.config.json
           npx cap init "All in One mods" "com.aiom.ios" --web-dir dist
           npx cap add ios
           npx cap copy ios
