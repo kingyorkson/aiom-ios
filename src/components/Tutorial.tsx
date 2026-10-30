@@ -73,5 +73,6 @@ const Tutorial: React.FC<TutorialProps> = ({ onComplete, isIOS = false }) => {
       </div>
     </div>
   );
+};
 
 export default Tutorial;

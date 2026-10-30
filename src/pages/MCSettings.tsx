@@ -368,5 +368,6 @@ const MCSettings: React.FC = () => {
       </div>
     </div>
   );
+};
 
 export default MCSettings;
