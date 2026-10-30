@@ -23,8 +23,10 @@ jobs:
       - name: Build web assets
         run: npm run build
 
-      - name: Install Capacitor CLI
-        run: npm install -g @capacitor/cli
+      - name: Install Capacitor CLI and iOS
+        run: |
+          npm install -g @capacitor/cli
+          npm install @capacitor/core @capacitor/ios
 
       - name: Initialize Capacitor iOS project
         run: |
