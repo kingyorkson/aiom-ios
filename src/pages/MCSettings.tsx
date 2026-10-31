@@ -16,7 +16,7 @@ const MCSettings: React.FC = () => {
   const [newOfflineName, setNewOfflineName] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [skins, setSkins] = useState<Array<{ name: string; path: string; size: number }>>([]);
-  const [showSkins, setShowSkins] = useState(false);
+  const [showSkins, setShowSkins] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [minecraftVerified, setMinecraftVerified] = useState(false);
   const [minecraftVerifiedAccount, setMinecraftVerifiedAccount] = useState<any>(null);
