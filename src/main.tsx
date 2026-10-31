@@ -27,6 +27,8 @@ if (typeof window !== 'undefined') {
     getGlobalConfig: async () => ({ accounts: [], minecraftVerified: false, offlineName: '' }),
     getRunningProcesses: async () => [],
     onRunningProcesses: () => () => {},
+    onLaunchStatus: () => () => {},
+    onPackUpdated: () => () => {},
     stopMinecraft: async () => {},
     getModPacks: async () => {
       try {

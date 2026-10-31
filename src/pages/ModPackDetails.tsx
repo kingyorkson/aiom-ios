@@ -37,13 +37,19 @@ const ModPackDetails: React.FC = () => {
   }, [name]);
   
   useEffect(() => {
-    window.electronAPI.onLaunchStatus((s) => {
-      setLaunchStatus(s);
-      if (s.message) {
-        setLaunchLogs((prev) => [...prev.slice(-500), s.message]);
+    try {
+      if ((window.electronAPI as any)?.onLaunchStatus) {
+        (window.electronAPI as any).onLaunchStatus((s: any) => {
+          setLaunchStatus(s);
+          if (s?.message) {
+            setLaunchLogs((prev) => [...prev.slice(-500), s.message]);
+          }
+        });
       }
-    });
-    window.electronAPI.onPackUpdated((info) => {
+    } catch {}
+    try {
+      if ((window.electronAPI as any)?.onPackUpdated) {
+        (window.electronAPI as any).onPackUpdated((info: any) => {
       if (info?.packName === name) {
         loadInstalledMods();
       }
