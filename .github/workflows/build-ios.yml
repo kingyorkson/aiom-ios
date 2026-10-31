@@ -46,6 +46,47 @@ jobs:
           if [ -f ios/App/Podfile ]; then
             sed -i '' "s/platform :ios, .*/platform :ios, '14.0'/g" ios/App/Podfile
           fi
+          # Add app icons
+          if [ -f icon.png ]; then
+            mkdir -p ios/App/App/Assets.xcassets/AppIcon.appiconset
+            cp icon.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+            for size in 20 29 40 58 60 76 80 87 120 152 167 180; do
+              sips -z $size $size ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-${size}.png >/dev/null 2>&1 || true
+            done
+            cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'EOF'
+{
+  "images" : [
+    {"idiom" : "iphone","size" : "20x20","scale" : "2x","filename" : "AppIcon-40.png"},
+    {"idiom" : "iphone","size" : "20x20","scale" : "3x","filename" : "AppIcon-60.png"},
+    {"idiom" : "iphone","size" : "29x29","scale" : "2x","filename" : "AppIcon-58.png"},
+    {"idiom" : "iphone","size" : "29x29","scale" : "3x","filename" : "AppIcon-87.png"},
+    {"idiom" : "iphone","size" : "40x40","scale" : "2x","filename" : "AppIcon-80.png"},
+    {"idiom" : "iphone","size" : "40x40","scale" : "3x","filename" : "AppIcon-120.png"},
+    {"idiom" : "iphone","size" : "60x60","scale" : "2x","filename" : "AppIcon-120.png"},
+    {"idiom" : "iphone","size" : "60x60","scale" : "3x","filename" : "AppIcon-180.png"},
+    {"idiom" : "ipad","size" : "20x20","scale" : "1x","filename" : "AppIcon-20.png"},
+    {"idiom" : "ipad","size" : "20x20","scale" : "2x","filename" : "AppIcon-40.png"},
+    {"idiom" : "ipad","size" : "29x29","scale" : "1x","filename" : "AppIcon-29.png"},
+    {"idiom" : "ipad","size" : "29x29","scale" : "2x","filename" : "AppIcon-58.png"},
+    {"idiom" : "ipad","size" : "40x40","scale" : "1x","filename" : "AppIcon-40.png"},
+    {"idiom" : "ipad","size" : "40x40","scale" : "2x","filename" : "AppIcon-80.png"},
+    {"idiom" : "ipad","size" : "76x76","scale" : "1x","filename" : "AppIcon-76.png"},
+    {"idiom" : "ipad","size" : "76x76","scale" : "2x","filename" : "AppIcon-152.png"},
+    {"idiom" : "ipad","size" : "83.5x83.5","scale" : "2x","filename" : "AppIcon-167.png"},
+    {"idiom" : "ios-marketing","size" : "1024x1024","scale" : "1x","filename" : "AppIcon-1024.png"}
+  ],
+  "info" : {"version" : 1, "author" : "xcode"}
+}
+EOF
+            # Update Info.plist if exists
+            if [ -f ios/App/App/Info.plist ]; then
+              /usr/libexec/PlistBuddy -c "Set :CFBundleIconName AppIcon" ios/App/App/Info.plist 2>/dev/null || true
+              /usr/libexec/PlistBuddy -c "Add :CFBundleIcons dict" ios/App/App/Info.plist 2>/dev/null || true
+              /usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon dict" ios/App/App/Info.plist 2>/dev/null || true
+              /usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles array" ios/App/App/Info.plist 2>/dev/null || true
+              /usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:0 string AppIcon" ios/App/App/Info.plist 2>/dev/null || true
+            fi
+          fi
 
       - name: Build IPA with xcodebuild
         run: |

@@ -25,17 +25,28 @@ const AppContent: React.FC = () => {
 
   const checkTutorial = async () => {
     try {
-      const isDone = await window.electronAPI.checkTutorial();
-      setShowTutorial(!isDone);
+      if (window.electronAPI?.checkTutorial) {
+        const isDone = await window.electronAPI.checkTutorial();
+        setShowTutorial(!isDone);
+      } else {
+        setShowTutorial(false);
+      }
     } catch (e) {
       console.error("Failed to check tutorial status", e);
+      setShowTutorial(false);
     } finally {
       setLoading(false);
     }
   };
 
   const handleTutorialComplete = async () => {
-    await window.electronAPI.completeTutorial();
+    try {
+      if (window.electronAPI?.completeTutorial) {
+        await window.electronAPI.completeTutorial();
+      }
+    } catch (e) {
+      console.error("Failed to complete tutorial", e);
+    }
     setShowTutorial(false);
   };
 
