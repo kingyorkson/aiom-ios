@@ -30,12 +30,18 @@ jobs:
 
       - name: Initialize Capacitor iOS project
         run: |
-          rm -f capacitor.config.ts capacitor.config.json
+          if [ -f capacitor.config.ts ]; then
+            cp capacitor.config.ts /tmp/capacitor.config.ts.bak
+          fi
+          rm -f capacitor.config.json
           if [ -f ios/ExportOptions.plist ]; then
             cp ios/ExportOptions.plist /tmp/ExportOptions.plist.bak
           fi
           rm -rf ios
           npx cap init "All in One mods" "com.aiom.ios" --web-dir dist
+          if [ -f /tmp/capacitor.config.ts.bak ]; then
+            cp /tmp/capacitor.config.ts.bak capacitor.config.ts
+          fi
           npx cap add ios
           npx cap copy ios
           npx cap sync ios
