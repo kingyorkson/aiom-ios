@@ -33,9 +33,9 @@ const TopBar: React.FC = () => {
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
-  const baseClass = "flex items-center space-x-4 p-4 transition-all duration-300";
+  const baseClass = "flex items-center space-x-3 p-3 transition-all duration-300";
   const themeClass = theme === 'fancy' 
-    ? "bg-aiom-sidebar/90 backdrop-blur-md shadow-lg rounded-b-2xl mx-4 mt-2 text-white" 
+    ? "bg-aiom-sidebar/90 backdrop-blur-md shadow-lg rounded-b-2xl mx-3 mt-1 text-white" 
     : "bg-[#c6c6c6] border-b-4 border-[#555555] text-black";
 
   const linkBase = "flex items-center gap-2 px-4 py-2 transition-all duration-200";
@@ -46,10 +46,10 @@ const TopBar: React.FC = () => {
 
   return (
     <div className={`${baseClass} ${themeClass}`}>
-      <div className="text-xl font-bold mr-8 tracking-wider">
+      <div className="text-lg font-bold mr-6 tracking-wider">
         AIOM
       </div>
-      <nav className="flex space-x-2">
+      <nav className="flex space-x-1">
         {navItems.map((item: any) => (
           <NavLink
             key={item.path}
@@ -60,8 +60,8 @@ const TopBar: React.FC = () => {
               ${isActive ? (theme === 'fancy' ? activeFancy : activeDefault) : ''}
             `}
           >
-            <item.icon size={20} />
-            <span>{item.name}</span>
+            <item.icon size={18} />
+            <span className="text-sm">{item.name}</span>
             {(item.alert) && <AlertCircle size={16} className="text-yellow-500" />}
           </NavLink>
         ))}

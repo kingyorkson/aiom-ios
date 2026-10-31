@@ -7,6 +7,9 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https',
     iosScheme: 'capacitor'
+  },
+  ios: {
+    preferredContentMode: 'mobile'
   }
 };
 

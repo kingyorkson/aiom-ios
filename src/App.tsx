@@ -76,6 +76,15 @@ const AppContent: React.FC = () => {
 import ErrorBoundary from './components/ErrorBoundary';
 
 const App: React.FC = () => {
+  useEffect(() => {
+    try {
+      const screen = (window.screen as any);
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+      }
+    } catch {}
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider>

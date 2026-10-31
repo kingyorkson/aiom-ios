@@ -7,8 +7,31 @@
   --color-aiom-text: #cdd6f4;
 }
 
+html {
+  font-size: 13px;
+}
+
 html, body, #root {
   height: 100%;
   margin: 0;
   overflow: hidden;
+}
+
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 11px;
+  }
 }

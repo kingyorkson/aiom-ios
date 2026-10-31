@@ -16,8 +16,10 @@ const MainLayout: React.FC = () => {
   return (
     <div className={`h-screen flex flex-col overflow-hidden ${bgClass}`}>
       <TopBar />
-      <div className="flex-1 overflow-auto p-6">
-        <Outlet />
+      <div className="flex-1 overflow-auto p-4">
+        <div className="scale-[0.92] origin-top-left w-[108.7%] h-[108.7%]">
+          <Outlet />
+        </div>
       </div>
       <button
         onClick={() => setShowProcs(true)}
