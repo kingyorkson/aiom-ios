@@ -21,14 +21,17 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: any, errorInfo: any) {
     console.error('App error:', error, errorInfo);
+    this.setState({ error: { message: error?.message, stack: error?.stack, errorInfo: errorInfo?.componentStack, raw: String(error) } });
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ background: '#000', color: '#fff', padding: '20px', height: '100vh', fontFamily: 'monospace', overflow: 'auto' }}>
+        <div style={{ background: '#000', color: '#fff', padding: '20px', height: '100vh', fontFamily: 'monospace', overflow: 'auto', fontSize: '12px' }}>
           <h2>Something went wrong</h2>
-          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{String(this.state.error?.stack || this.state.error)}</pre>
+          <div style={{ marginBottom: '10px' }}>MSG: {String((this.state.error as any)?.message || (this.state.error as any)?.raw || this.state.error)}</div>
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{String((this.state.error as any)?.stack || '')}</pre>
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: '10px' }}>{String((this.state.error as any)?.errorInfo || '')}</pre>
         </div>
       );
     }
