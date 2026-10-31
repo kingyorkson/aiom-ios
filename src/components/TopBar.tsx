@@ -10,7 +10,9 @@ const TopBar: React.FC = () => {
   useEffect(() => {
     const check = async () => {
       try {
+        if (!(window.electronAPI as any)?.getGlobalConfig) return;
         const config = await (window.electronAPI as any).getGlobalConfig?.();
+        if (!config) return;
         const hasAccounts = Array.isArray(config?.accounts) && config.accounts.length > 0;
         const hasOffline = !!config?.offlineName;
         if (!(config?.minecraftVerified) && !(hasAccounts || hasOffline)) {

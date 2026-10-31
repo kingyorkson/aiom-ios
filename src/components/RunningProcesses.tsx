@@ -15,22 +15,28 @@ const RunningProcesses: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
-    window.electronAPI.getRunningProcesses().then(setProcs);
+    if (window.electronAPI?.getRunningProcesses) {
+      window.electronAPI.getRunningProcesses().then(setProcs).catch(() => {});
+    }
     const handler = (p: Proc[]) => setProcs(p);
-    if ((window.electronAPI as any).onRunningProcesses) {
+    if ((window.electronAPI as any)?.onRunningProcesses) {
       (window.electronAPI as any).onRunningProcesses(handler);
     }
     const i = setInterval(() => {
-      window.electronAPI.getRunningProcesses().then(setProcs);
+      if (window.electronAPI?.getRunningProcesses) {
+        window.electronAPI.getRunningProcesses().then(setProcs).catch(() => {});
+      }
     }, 2000);
     return () => clearInterval(i);
   }, []);
 
   const stop = async (id: string) => {
-    if ((window.electronAPI as any).stopMinecraft) {
-      await (window.electronAPI as any).stopMinecraft(id);
+    if ((window.electronAPI as any)?.stopMinecraft) {
+      try { await (window.electronAPI as any).stopMinecraft(id); } catch {}
     }
-    window.electronAPI.getRunningProcesses().then(setProcs);
+    if (window.electronAPI?.getRunningProcesses) {
+      window.electronAPI.getRunningProcesses().then(setProcs).catch(() => {});
+    }
   };
 
   const sel = procs.find(p => p.id === selected) || procs[0];
