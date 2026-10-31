@@ -9,6 +9,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error('Global error:', e.error || e.message);
+        var root = document.getElementById('root');
+        if (root && !root.innerHTML.trim()) {
+          root.innerHTML = '<div style="background:#000;color:#fff;padding:20px;height:100vh;font-family:monospace;overflow:auto;font-size:12px;"><h2>Global Error</h2><pre>' + (e.error?.stack || e.message || String(e)) + '</pre></div>';
+        }
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error('Unhandled rejection:', e.reason);
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
