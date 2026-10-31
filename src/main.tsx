@@ -24,7 +24,6 @@ if (typeof window !== 'undefined') {
         localStorage.setItem('aiom_tutorial_done', 'true');
       } catch {}
     },
-    completeTutorial: async () => {},
     getGlobalConfig: async () => ({ accounts: [], minecraftVerified: false, offlineName: '' }),
     getRunningProcesses: async () => [],
     onRunningProcesses: () => () => {},
