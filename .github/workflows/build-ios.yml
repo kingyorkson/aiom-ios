@@ -32,13 +32,25 @@ jobs:
         run: |
           if [ -f capacitor.config.ts ]; then
             cp capacitor.config.ts /tmp/capacitor.config.ts.bak
+            rm capacitor.config.ts
           fi
-          rm -f capacitor.config.json
           if [ -f ios/ExportOptions.plist ]; then
             cp ios/ExportOptions.plist /tmp/ExportOptions.plist.bak
           fi
           rm -rf ios
+          cat > capacitor.config.json << 'EOF'
+          {
+            "appId": "com.aiom.ios",
+            "appName": "All in One mods",
+            "webDir": "dist",
+            "server": {
+              "androidScheme": "https",
+              "iosScheme": "capacitor"
+            }
+          }
+          EOF
           npx cap init "All in One mods" "com.aiom.ios" --web-dir dist
+          rm capacitor.config.json
           if [ -f /tmp/capacitor.config.ts.bak ]; then
             cp /tmp/capacitor.config.ts.bak capacitor.config.ts
           fi
