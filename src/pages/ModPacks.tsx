@@ -26,7 +26,9 @@ const ModPacks: React.FC = () => {
   const loaders = ['Vanilla', 'Forge', 'Fabric', 'Quilt', 'NeoForge'];
 
   useEffect(() => {
-    window.electronAPI.updateDiscordPresence('Browsing Library');
+    try {
+      (window.electronAPI as any)?.updateDiscordPresence?.('Browsing Library');
+    } catch {}
     loadPacks();
     loadVersions();
   }, []);

@@ -29,7 +29,7 @@ const ModPackDetails: React.FC = () => {
 
   useEffect(() => {
     if (name) {
-      window.electronAPI.updateDiscordPresence(`Managing ${name}`);
+      try { (window.electronAPI as any)?.updateDiscordPresence?.(`Managing ${name}`); } catch {}
       loadPackInfo();
       loadFiles();
       loadInstalledMods();

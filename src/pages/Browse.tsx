@@ -31,7 +31,7 @@ const Browse: React.FC = () => {
   const [installProgress, setInstallProgress] = useState<{ percent: number, status: string } | null>(null);
 
   useEffect(() => {
-    window.electronAPI.updateDiscordPresence('Browsing Mods');
+    try { (window.electronAPI as any)?.updateDiscordPresence?.('Browsing Mods'); } catch {}
     loadPacks();
     loadVersions();
 

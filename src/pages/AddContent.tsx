@@ -43,7 +43,7 @@ const AddContent: React.FC = () => {
   useEffect(() => {
     loadPackInfo();
     if (packName) {
-      window.electronAPI.updateDiscordPresence(`Adding Content to ${packName}`);
+      try { (window.electronAPI as any)?.updateDiscordPresence?.(`Adding Content to ${packName}`); } catch {}
     }
   }, [packName]);
 
